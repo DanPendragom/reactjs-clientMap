@@ -1,10 +1,11 @@
-import React from 'react';
+import React from 'react'
+import MeuMapa from './components/Map'
 import './global.css'
 
 function App() {
   return (
     <div className="App">
-      <h1>Hello World</h1>
+      <MeuMapa />
     </div>
   );
 }
