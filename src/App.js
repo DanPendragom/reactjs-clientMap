@@ -1,11 +1,11 @@
 import React from 'react'
-import MeuMapa from './components/Map'
+import Routes from './Routes'
 import './global.css'
 
 function App() {
   return (
     <div className="App">
-      <MeuMapa />
+      <Routes />
     </div>
   );
 }
