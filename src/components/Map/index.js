@@ -2,20 +2,18 @@ import React, { Component } from 'react'
 import { withGoogleMap, withScriptjs, GoogleMap, Marker } from 'react-google-maps'
 import { MarkerClusterer } from 'react-google-maps/lib/components/addons/MarkerClusterer';
 import HeatmapLayer from 'react-google-maps/lib/components/visualization/HeatmapLayer';
-import * as Object from '../../data/teste.json'
-
+import api from '../../services/api'
 class Map extends Component {
     state = {
         places: []
     }
 
     async componentDidMount() {
-        await this.setState({places: Object.default})
-        console.log(this.state.places)
-        
+        const response = await api.get('/')
+        await this.setState({places: response.data})
     }
 
-    getState(maker){
+    getMaker(maker){
         alert("Vocêclicou na " + maker.name)
     }
 
@@ -37,7 +35,7 @@ class Map extends Component {
                         position={{ 
                             lat: makers.latitude, 
                             lng: makers.longitude }} 
-                        onClick={() => this.getState(makers)}
+                        onClick={() => this.getMaker(makers)}
                     />
                 ))}
                 </MarkerClusterer>
