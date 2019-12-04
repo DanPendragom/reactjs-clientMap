@@ -9,23 +9,26 @@ class Map extends Component {
     state = {
         places: [],
     }
+    
+    componentDidMount() {   
+        const button = document.getElementById('btn')
+        button.onclick = this.handleSubmitRequest
+    }
 
-    async componentDidUpdate() {
+    handleSubmitRequest = async () => {
         this.registerToSocket()
         const resp = JSON.stringify(this.props.propplacemarked)
         const response = await api.get(`/?placemarked=${resp}`)
         await this.setState({ places: response.data })
     }
 
-    registerToSocket(){
+    registerToSocket() {
         const socket = io('http://localhost:3001');
     }
 
     getMaker(maker) {
         alert("Você clicou na " + maker.name)
     }
-
-
 
     render() {
         return (
@@ -66,7 +69,6 @@ export default class MeuMapa extends Component {
 
         this.selectGroup = this.selectGroup.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
-        this.handleSubmitChange = this.handleSubmitChange.bind(this)
     }
 
     selectGroup(type) {
@@ -75,22 +77,49 @@ export default class MeuMapa extends Component {
 
     handleInputChange = async e => {
         let { value } = e.target
-
-        if (value == 1) {
-            await this.setState({
-                displayMarker: { lat: [-23.921150, -23.990524], lng: [-46.297715, -46.384536] }
-            }); // Santos
-        }
-        else if (value == 2) {
-            await this.setState({
-                displayMarker: { lat: [-24.031940, -24.081513], lng: [-46.399934, -46.605015] }
-            }); // Praia Grande
+        console.log(value)
+        switch (value) {
+            case '0':
+                await this.setState({
+                    displayMarker: { lat: [-22.367787, -25.079464], lng: [-43.067382, -48.904414] }
+                }); // Tudo
+                break
+            case '1':
+                await this.setState({
+                    displayMarker: { lat: [-23.921150, -23.990524], lng: [-46.297715, -46.384536] }
+                }); // Santos
+                break
+            case '2':
+                await this.setState({
+                    displayMarker: { lat: [-24.031940, -24.081513], lng: [-46.399934, -46.605015] }
+                }); // Praia Grande
+                break
+            case '3':
+                await this.setState({
+                    displayMarker: { lat: [-23.935644, -23.974104], lng: [-46.370931, -46.425388] }
+                }); // São Vicente
+                break
+            case '4':
+                await this.setState({
+                    displayMarker: { lat: [-23.862731, -23.900441], lng: [-46.399055, -46.457179] }
+                }); // Cubatão
+                break
+            case '5':
+                await this.setState({
+                    displayMarker: { lat: [-23.941140, -24.017498], lng: [-46.169276, -46.291207] }
+                }); // Guarujá
+                break
+            case '6':
+                await this.setState({
+                    displayMarker: { lat: [-23.465580, -23.626725], lng: [-46.344040, -46.604278] }
+                }); // Zona Leste
+                break
+            default:
+                alert('alert')
+                break
         }
     }
 
-    handleSubmitChange = e => {
-        e.preventDefault()
-    }
 
     render() {
         return (
@@ -100,19 +129,18 @@ export default class MeuMapa extends Component {
                         <h1>Contele</h1>
                     </header>
                     <Form>
-
                         <label>Selecione a região</label>
-
                         <select
                             name="displayMarker"
                             onChange={this.handleInputChange}>
-                            <option value="0">Selecione...</option>
+                            <option value="">Selecione...</option>
                             <option value="1">Santos</option>
                             <option value="2">Praia Grande</option>
                             <option value="3">São Vicente</option>
-                            <option value="4">Guarujá</option>
-                            <option value="5">Mongaguá</option>
-                            <option value="6">Itanhaém</option>
+                            <option value="4">Cubatão</option>
+                            <option value="5">Guarujá</option>
+                            <option value="6">Zona Leste</option>
+                            <option value="0">Tudo</option>
                         </select>
 
                         <Agrupamento>
@@ -134,7 +162,7 @@ export default class MeuMapa extends Component {
                                 <span>Cluster</span>
                             </div>
                         </Agrupamento>
-                        <button type="submit">AGRUPAR</button>
+                        <button type="button" id="btn">AGRUPAR</button>
                     </Form>
                 </MenuLateral>
                 <WrappedMap
